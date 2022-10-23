@@ -36,17 +36,34 @@ def info():
             mint = r.json()['mint']
             symbol = requests.get(metaplexUrl).json()['symbol']
             description = requests.get(metaplexUrl).json()['description']
-            colName = requests.get(metaplexUrl).json()['collection']['name']
-            colFamily = requests.get(metaplexUrl).json()['collection']['family']
-
-            addressToDB = NFTdatabase(mint = mint, name = name, symbol = symbol, description = description,
-                                      colName = colName, colFamily = colFamily,
-                                      icon = icon)
+            colName = ''
+            colFamily = ''
+            collection = []
+            for i in requests.get(metaplexUrl).json():
+                collection.append(i)
+            checkCollection = False
+            for i in collection:
+                if i == 'collection':
+                    checkCollection = True
+                else:
+                    checkCollection = False
+            if checkCollection:
+                colName = requests.get(metaplexUrl).json()['collection']['name']
+                colFamily = requests.get(metaplexUrl).json()['collection']['family']
+            addressToDB = ''
+            if checkCollection:
+                addressToDB = NFTdatabase(mint = mint, name = name, symbol = symbol, description = description, colName = colName, colFamily = colFamily, icon = icon)
+            else:
+                addressToDB = NFTdatabase(mint=mint, name=name, symbol=symbol, description=description, colName = 'None', colFamily = 'None', icon=icon)
             db.session.add(addressToDB)
             db.session.commit()
-            return render_template('NFTInfo.html', officialName = name, icon = icon, mint = mint, name = name,
-                                   symbol = symbol, description = description,
-                                   colName = colName, colFamily = colFamily)
+            if checkCollection:
+                return render_template('NFTInfo.html', officialName=name, icon=icon, mint=mint, name=name,
+                                       symbol=symbol, description=description,
+                                       colName=colName, colFamily=colFamily)
+            else:
+                return render_template('NFTInfo.html', officialName=name, icon=icon, mint=mint, name=name,
+                                       symbol=symbol, description=description, colName='None', colFamily='None')
         else:
             return render_template('NotFound.html')
 
