@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Info</title>
+</head>
+<body>
+<h1 style="width:100%;top:80%;text-align:center;"> {{ officialName }} </h1>
+<hr style="width: 40%;">
+<img src = "{{ icon }}" style="width: 25%;margin-left:40%;">
+<hr style="width: 40%;">
+<div style="width:100%;top:80%;text-align:center;">
+    <p>Mint: {{ mint }}</p>
+    <p>Name: {{ name }}</p>
+    <p>Symbol: {{ symbol }}</p>
+    <p>Description: {{ description }}</p>
+    <p>Collection: {{ colName }} </p>
+    <p>Family: {{ colFamily }}</p>
+</div>
+<hr style="width: 40%;">
+<form style="width:100%;top:80%;text-align:center;">
+    <input type = "button" value = "Go back" onclick = "history.back()">
+</form>
+</body>
+</html>
